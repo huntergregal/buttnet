@@ -78,7 +78,7 @@ void buttnet::start()
 	//Recv some data
 	int numbytes;
 	char buf[MAXDATASIZE];
-
+    int pongCount = 0;
 	int count = 0;
 	while (1)
 	{
@@ -92,35 +92,53 @@ void buttnet::start()
 					sendData(nick);
 					sendData(usr);
 				break;
-			case 4:
+			//case 10:
 					//Join a channel after we connect, this time we choose beakeri
-				sleep(5000); //sleep for connection 5 seconds
-				sendData(channel);
+              //  sendData(channel);
 			default:
 				break;
 		}
 
-
-
 		//Recv & print Data
 		numbytes = recv(s,buf,MAXDATASIZE-1,0);
 		buf[numbytes]='\0';
-		cout << buf;
+		cout << buf; //debug
 		//buf is the data that is recived
 
-		//Pass buf to the message handeler
-		msgHandel(buf);
-
-
-		//If Ping Recived
-		/*
-		 * must reply to ping overwise connection will be closed
-		 * see http://www.irchelp.org/irchelp/rfc/chapter4.html
-		 */
+        //ping pong
 		if (charSearch(buf,"PING"))
 		{
 			sendPong(buf);
+            pongCount += 1;
 		}
+        if (isConnected(buf) == true)
+        {
+            break;
+        }
+    }
+
+    bool joined = false;
+    while(1)
+    {
+		//Recv & print Data
+		numbytes = recv(s,buf,MAXDATASIZE-1,0);
+		buf[numbytes]='\0';
+        
+        //ping pong
+		if (charSearch(buf,"PING"))
+		{
+			sendPong(buf);
+            pongCount += 1;
+		}
+
+        //join channel
+        if ((isConnected(buf) == true) && (joined == false) && (pongCount >= 2))
+        {
+            sendData(channel);
+            joined = true;
+         }
+		//Pass buf to the message handeler
+		msgHandel(buf);
 
 		//break if connection closed
 		if (numbytes==0)
@@ -167,10 +185,14 @@ bool buttnet::charSearch(char *toSearch, char *searchFor)
 bool buttnet::isConnected(char *buf)
 {//returns true if "/MOTD" is found in the input strin
 	//If we find /MOTD then its ok join a channel
-	if (charSearch(buf,"/MOTD") == true)
+	if ( (charSearch(buf,"/MOTD") == true) || (charSearch(buf,"message of the day") == true))
+    {
 		return true;
+    }
 	else
+    {
 		return false;
+    }
 }
 
 char * buttnet::timeNow()
@@ -267,9 +289,9 @@ void buttnet::msgHandel(char * buf)
 	 * TODO: add you code to respod to commands here
 	 * the example below replys to the command hi scooby
 	 */
-	if (charSearch(buf,"!butt"))
+	if (charSearch(buf,"!butt test"))
 	{
-		sendData("PRIVMSG #master :BUTTbuttBUTT\r\n");
+		sendData("PRIVMSG #butt :BUTTbuttBUTT\r\n");
 	}
 
 }

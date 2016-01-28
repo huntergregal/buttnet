@@ -16,7 +16,7 @@ int main()
 	string channel = "JOIN #butt\r\n";
 	string port = "6667";*/
 
-	srand(time(NULL));
+    srand(time(NULL));
 	int mutex = (rand() % 1000);
 	string nick = "NICK butt_" + std::to_string(mutex) + "\r\n";
 	string user = "USER butt_" + std::to_string(mutex) + " butthost buttserv :buttbot" + "\r\n";
