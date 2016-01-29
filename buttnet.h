@@ -5,7 +5,7 @@ class buttnet
 {
 public:
 	buttnet(char * _nick, char * _usr, char * _ircServer, char * _ircServerPass, char * _channel, char * _port);
-	virtual ~buttnett();
+	virtual ~buttnet();
 
 	bool setup;
 
