@@ -18,10 +18,17 @@ int main()
 
 	srand(time(NULL));
 	int mutex = (rand() % 1000);
-	string nick = "NICK butt_" + to_string(mutex) + "\r\n";
-	string user = "USER butt_" + to_string(mutex) + "\r\n";
+	string nick = "NICK butt_" + std::to_string(mutex) + "\r\n";
+	string user = "USER butt_" + std::to_string(mutex) + "\r\n";
+
+	char *ircServerChars = &ircServer[0u];
+	char *ircServerPassChars = &ircServerPass[0u];
+	char *channelChars = &channel[0u];
+	char *portChars = &port[0u];
+	char *nickChars = &nick[0u];
+	char *userChars = &user[0u];
 	
-	buttnet butt = buttnet(nick,user,ircServer,ircServerPass,channel,port);
+	buttnet butt = buttnet(nickChars,userChars,ircServerChars,ircServerPassChars,channelChars,portChars);
 	butt.start();
 
   return 0;
