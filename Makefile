@@ -1,1 +1,2 @@
-g++ main.cpp buttnet.cpp -o OUT -std=c++11
+buttnet: main.cpp buttnet.cpp
+	g++ main.cpp buttnet.cpp -o buttnet -std=c++11

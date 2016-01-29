@@ -88,11 +88,13 @@ void buttnet::start()
 		switch (count) {
 			case 3:
 					//after 3 recives send data to server (as per IRC protacol)
+					sendData(ircServerPass);
 					sendData(nick);
 					sendData(usr);
 				break;
 			case 4:
 					//Join a channel after we connect, this time we choose beakeri
+				sleep(5000); //sleep for connection 5 seconds
 				sendData(channel);
 			default:
 				break;
@@ -267,7 +269,7 @@ void buttnet::msgHandel(char * buf)
 	 */
 	if (charSearch(buf,"!butt"))
 	{
-		sendData("PRIVMSG #butt :BUTTbuttBUTT\r\n");
+		sendData("PRIVMSG #master :BUTTbuttBUTT\r\n");
 	}
 
 }
