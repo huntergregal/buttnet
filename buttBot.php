@@ -86,7 +86,8 @@ class buttBOT {
                                 }
 				$message = shell_exec(trim($cmd));
 				$message = preg_replace("/\r|\n|\r\n/", " <br> ", $message);
-				$this->send_data('PRIVMSG '.$this->buf[2].' :', $message);
+				preg_match('~:(.*?)!~', $this->buf[0], $master);
+				$this->send_data('PRIVMSG '.$master[1].' :', $message);
                                 break;                     
                                                                  
                         case ':!say':
