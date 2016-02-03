@@ -1,7 +1,7 @@
 <?php
 function snowdenEnc($string) {
 
- $white = base64_decode(base64_decode('VkRSa1lTTmVPQ2hJWnp3aA=='));
+ $white = base64_decode(base64_decode('U0cxTU5pbzNSR1pGTTBCZVZqRkpURWx1WHk0K1YwQnJNMVZ3S1FvPQo='));
  $text = $string;
  $black = '';
 
@@ -14,7 +14,7 @@ function snowdenEnc($string) {
 
 function snowdenDec($string) {
 
- $white = base64_decode(base64_decode('VkRSa1lTTmVPQ2hJWnp3aA=='));
+ $white = base64_decode(base64_decode('U0cxTU5pbzNSR1pGTTBCZVZqRkpURWx1WHk0K1YwQnJNMVZ3S1FvPQo='));
  $text = base64_decode(base64_decode($string));
  $black = '';
 
