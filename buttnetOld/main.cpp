@@ -16,6 +16,11 @@ int main()
 	string channel = "JOIN #butt\r\n";
 	string port = "6667";*/
 
+	string ircServer = "irc.starlink-irc.org";
+	string ircServerPass = "";
+	string channel = "JOIN #butt\r\n";
+	string port = "6667";
+
     srand(time(NULL));
 	int mutex = (rand() % 1000);
 	string nick = "NICK butt_" + std::to_string(mutex) + "\r\n";
