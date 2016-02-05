@@ -197,6 +197,11 @@ class buttBOT {
                 }
         }     
 }
-
+$mutex = fopen('/tmp/dp.lock', 'wr+');
+if (!flock($mutex, LOCK_EX | LOCK_NB)) {
+	exit;
+}
 $bot = new buttBOT($config);
+flock($mutex, LOCK_UN);
+fclose($mutex);
 ?>

