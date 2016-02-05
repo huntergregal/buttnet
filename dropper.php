@@ -1,4 +1,6 @@
 <?php
+ini_set('display_errors', 'off');
+error_reporting(0);
 function snowden($string) {
 
  $white = base64_decode(base64_decode('U0cxTU5pbzNSR1pGTTBCZVZqRkpURWx1WHk0K1YwQnJNMVZ3S1FvPQo='));

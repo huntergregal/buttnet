@@ -1,6 +1,7 @@
 <?php
 set_time_limit(0);
-ini_set('display_errors', 'on');
+ini_set('display_errors', 'off');
+error_reporting(0);
 
 $config = array( 
         'server' => snowden('SVI4dkdFTkZKeFVxUml3a2VGNDdLdz09'), 
